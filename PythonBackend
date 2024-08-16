@@ -1,1 +1,47 @@
+import pandas as pd
+import sqlite3
+from geopy.distance import geodesic
 
+// Conectar ao banco de dados SQL
+conn = sqlite3.connect('pathfinder.db')
+cursor = conn.cursor()
+
+// Função para calcular a rota ótima
+def calcular_rota_otima(pontos):
+    # Suponha que temos uma função de cálculo de rota aqui
+    # Exemplo simplificado: calcula a distância entre pontos
+    rota = []
+    for i in range(len(pontos) - 1):
+        rota.append(geodesic(pontos[i], pontos[i+1]).km)
+    return rota
+
+// Função para atualizar a localização dos veículos
+def atualizar_localizacao_veiculo(veiculo_id, latitude, longitude):
+    cursor.execute('''
+        UPDATE veiculos
+        SET latitude = ?, longitude = ?
+        WHERE id = ?
+    ''', (latitude, longitude, veiculo_id))
+    conn.commit()
+
+// Função para obter a localização dos veículos
+def obter_localizacao_veiculo(veiculo_id):
+    cursor.execute('''
+        SELECT latitude, longitude FROM veiculos WHERE id = ?
+    ''', (veiculo_id,))
+    return cursor.fetchone()
+
+// Função para calcular a rota
+def calcular_roteiro_entrega(entregas):
+    // Implementação simplificada para o protótipo
+    pontos = [entrega['localizacao'] for entrega in entregas]
+    return calcular_rota_otima(pontos)
+
+// Exemplo de dados de entrega
+entregas = [
+    {'id': 1, 'localizacao': (37.7749, -122.4194)},
+    {'id': 2, 'localizacao': (34.0522, -118.2437)},
+]
+
+rota_otima = calcular_roteiro_entrega(entregas)
+print("Rota ótima:", rota_otima)
