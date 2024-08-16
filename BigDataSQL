@@ -1,1 +1,83 @@
+// Criar uma estrutura de banco de dados SQL para um sistema de entrega que pode lidar com grandes volumes de dados (Big Data)
+// é importante seja escalável e eficiente para consultas rápidas.
 
+// Estrutura do Banco de Dados SQL para Sistema de Entrega
+// 1. Tabelas Principais
+// pedidos: Armazena informações sobre as encomendas.
+// veiculos: Armazena informações sobre os veículos de entrega.
+// entregas: Registra o status das entregas.
+// entregas_historico: Mantém o histórico das entregas realizadas.
+
+// 2. Criação das Tabelas
+// Tabela pedidos
+
+CREATE TABLE pedidos (
+    pedidos_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id BIGINT NOT NULL,
+    pedidos_data TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    pedidos_endereco VARCHAR(255),
+    status ENUM('Pendente', 'Enviada', 'Em Trânsito', 'Entregue', 'Cancelado') DEFAULT 'Pendente',
+    total DECIMAL(10, 2) NOT NULL
+);
+
+// pedidos_id: Identificador único da encomenda
+// cliente_id: Identificador do cliente
+// pedidos_data: Data e hora em que a encomenda foi criada
+// pedidos_endereço: Endereço de entrega
+// status: Status atual da encomenda (pode ser pendente, enviada, em trânsito, entregue ou cancelada)
+// total: Valor total da encomenda
+
+// Tabela veiculos
+
+CREATE TABLE veiculos (
+    veiculos_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    veiculos_placa VARCHAR(20) UNIQUE NOT NULL,
+    veiculo_modelo VARCHAR(50),
+    veiculos_capacidade DECIMAL(5, 2) NOT NULL,  -- capacidade em m3
+    veiculos_localizacao_atual GEOMETRY,  -- armazena dados da localizacao (lat, long)
+    status ENUM('Disponível', 'Em uso', 'Em manutenção') DEFAULT 'Disponível'
+);
+
+// veiculos_id: Identificador único do veículo
+// veiculos_placa: Placa do veículo
+// veiculo_modelo: Modelo do veículo
+// veiculos_capacidade: Capacidade do veículo
+// veiculos_localizacao_atual: Localização atual do veículo, armazenada como dados geolocalizados.
+// status: Status do veículo (disponível, em uso ou em manutenção).
+
+// Tabela entregas
+
+CREATE TABLE entregas (
+    entregas_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    pedidos_id BIGINT NOT NULL,
+    veiculos_id BIGINT NOT NULL,
+    tempo_inicial TIMESTAMP,
+    tempo_final TIMESTAMP,
+    status ENUM('Agendado', 'Em progresso', 'Completo', 'Falhou') DEFAULT 'Agendado',
+    FOREIGN KEY (order_id) REFERENCES pedidos(pedidos_id),
+    FOREIGN KEY (vehicle_id) REFERENCES veiculos(veiculos_id)
+);
+
+// entregas_id: Identificador único da entrega
+// pedidos_id: Referência à encomenda associada
+// veiculos_id: Referência ao veículo responsável pela entrega
+// tempo_inicial: Data e hora em que a entrega começou
+// tempo_final: Data e hora em que a entrega foi concluída
+// status: Status da entrega (agendada, em progresso, concluída ou falhada)
+
+// Tabela pedidos_historico
+
+CREATE TABLE pedidos_historico (
+    historico_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    entregas_id BIGINT NOT NULL,
+    evento_tempo TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    evento_tipo ENUM('Criado', 'Atualizado', 'Cancelado', 'Completo') NOT NULL,
+    detalhes TEXT,
+    FOREIGN KEY ( entregas_id) REFERENCES deliveries(historico_id)
+);
+
+// historico_id: Identificador único do histórico de eventos.
+// entregas_id: Referência à entrega associada.
+// evento_tempo: Data e hora do evento.
+// evento_tipo: Tipo de evento (criado, atualizado, cancelado, concluído).
+// detalhes: Detalhes adicionais sobre o evento.
