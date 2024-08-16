@@ -1,3 +1,18 @@
+// Explicação do Código
+// Classe Order:
+// Representa uma encomenda com ID, status e localização.
+// Inclui métodos getter e setter para acessar e modificar esses atributos.
+// O método toString é sobrescrito para fornecer uma representação legível da encomenda.
+
+// Classe TrackingSystem:
+// Gerencia uma coleção de encomendas usando um HashMap, onde a chave é o ID da encomenda e o valor é o objeto Order.
+// Permite adicionar novas encomendas, atualizar o status e a localização, e recuperar o status de uma encomenda.
+
+// Classe Main:
+// Cria uma instância de TrackingSystem.
+// Adiciona algumas encomendas e atualiza o status de uma delas.
+// Exibe o status das encomendas para o usuário.
+
 // Order.java
 public class Order {
     private String orderId;
@@ -39,5 +54,63 @@ public class Order {
     @Override
     public String toString() {
         return "Order ID: " + orderId + ", Status: " + status + ", Location: " + location;
+    }
+}
+
+// TrackingSystem.java
+import java.util.HashMap;
+import java.util.Map;
+
+public class TrackingSystem {
+    private Map<String, Order> orders;
+
+    // Construtor
+    public TrackingSystem() {
+        orders = new HashMap<>();
+    }
+
+    // Adiciona uma encomenda ao sistema
+    public void addOrder(Order order) {
+        orders.put(order.getOrderId(), order);
+    }
+
+    // Atualiza o status e a localização de uma encomenda
+    public void updateOrder(String orderId, String status, String location) {
+        Order order = orders.get(orderId);
+        if (order != null) {
+            order.setStatus(status);
+            order.setLocation(location);
+        }
+    }
+
+    // Obtém o status e localização de uma encomenda
+    public Order getOrderStatus(String orderId) {
+        return orders.get(orderId);
+    }
+}
+
+// Main.java
+public class Main {
+    public static void main(String[] args) {
+        // Criar o sistema de rastreamento
+        TrackingSystem trackingSystem = new TrackingSystem();
+        
+        // Criar e adicionar encomendas
+        Order order1 = new Order("123", "Shipped", "Warehouse A");
+        Order order2 = new Order("456", "In Transit", "City B");
+        
+        trackingSystem.addOrder(order1);
+        trackingSystem.addOrder(order2);
+        
+        // Atualizar o status e a localização de uma encomenda
+        trackingSystem.updateOrder("123", "Delivered", "Customer's Address");
+        
+        // Obter e exibir o status de uma encomenda
+        Order updatedOrder = trackingSystem.getOrderStatus("123");
+        System.out.println(updatedOrder);
+        
+        // Obter e exibir o status de outra encomenda
+        Order order = trackingSystem.getOrderStatus("456");
+        System.out.println(order);
     }
 }
