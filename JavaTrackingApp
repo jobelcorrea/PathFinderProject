@@ -1,1 +1,43 @@
+// Order.java
+public class Order {
+    private String orderId;
+    private String status;
+    private String location;
 
+    // Construtor
+    public Order(String orderId, String status, String location) {
+        this.orderId = orderId;
+        this.status = status;
+        this.location = location;
+    }
+
+    // Getters e Setters
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    @Override
+    public String toString() {
+        return "Order ID: " + orderId + ", Status: " + status + ", Location: " + location;
+    }
+}
