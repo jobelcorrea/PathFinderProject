@@ -1,1 +1,42 @@
+import sqlite3
 
+// Conectar ao banco de dados
+conn = sqlite3.connect('pathfinder.db')
+cursor = conn.cursor()
+
+// Criação da tabela de veículos
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS veiculos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    latitude REAL,
+    longitude REAL,
+    estado TEXT
+)
+''')
+
+// Criação da tabela de entregas
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS entregas (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    localizacao_lat REAL,
+    localizacao_lon REAL,
+    status TEXT
+)
+''')
+
+// Criação da tabela de histórico de entregas
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS historico_entregas (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    entrega_id INTEGER,
+    veiculo_id INTEGER,
+    inicio_tempo DATETIME,
+    fim_tempo DATETIME,
+    entrega_custo REAL,
+    FOREIGN KEY (entrega_id) REFERENCES entregas(id),
+    FOREIGN KEY (veiculo_id) REFERENCES veiculos(id)
+)
+''')
+
+conn.commit()
+conn.close()
