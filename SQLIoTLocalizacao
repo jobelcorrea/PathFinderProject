@@ -40,3 +40,54 @@ CREATE TABLE IF NOT EXISTS historico_entregas (
 
 conn.commit()
 conn.close()
+
+// Código Python para atualizar a localização dos veículos:
+
+def atualizar_localizacao_veiculo(veiculo_id, latitude, longitude):
+    conn = sqlite3.connect('logistics.db')
+    cursor = conn.cursor()
+    
+    cursor.execute('''
+    UPDATE veiculos
+    SET latitude = ?, longitude = ?
+    WHERE id = ?
+    ''', (latitude, longitude, veiculo_id))
+    
+    conn.commit()
+    conn.close()
+
+// Exemplo de uso: atualizar_localizacao_veiculo(1, 37.7749, -122.4194)
+
+// Código para calcular a rota:
+
+from geopy.distance import geodesic
+
+def calcular_rota_otima(pontos):
+    rota = []
+    for i in range(len(pontos) - 1):
+        distancia = geodesic(pontos[i], pontos[i+1]).km
+        rota.append(distancia)
+    return rota
+
+rota_otima = calcular_rota_otima(pontos)
+print("Rota ótima:", rota_otima)
+
+// Código para receber e processar dados dos dispositivos IoT:
+
+import requests
+def receber_dados_io():
+    // Simulação de dados recebidos dos dispositivos IoT
+    dados_simulados = {
+        'veiculos': [
+            {'id': 1, 'latitude': 37.7749, 'longitude': -122.4194},
+            {'id': 2, 'latitude': 34.0522, 'longitude': -118.2437}
+        ]
+    }
+    return dados_simulados
+
+def processar_dados_io():
+    dados_io = receber_dados_io()
+    for dado in dados_io['veiculos']:
+        atualizar_localizacao_veiculo(dado['id'], dado['latitude'], dado['longitude'])
+
+processar_dados_io()
