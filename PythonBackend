@@ -1,3 +1,5 @@
+// Atualizado em 03-fev-25
+// Importa as bibliotecas
 import pandas as pd
 import sqlite3
 from geopy.distance import geodesic
