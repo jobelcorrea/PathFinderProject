@@ -1,4 +1,4 @@
-// Criar uma estrutura de banco de dados SQL para um sistema de entrega que pode lidar com grandes volumes de dados (Big Data)
+// Criar uma estrutura de banco de dados SQL para um sistema de entrega que pode lidar com grandes volumes de dados (Big Data).
 // é importante seja escalável e eficiente para consultas rápidas.
 
 // Estrutura do Banco de Dados SQL para Sistema de Entrega
