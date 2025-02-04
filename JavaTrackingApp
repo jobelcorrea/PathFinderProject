@@ -1,4 +1,5 @@
-// Explicação do Código
+// Atualizado em 03-fev-25
+// Explicação do Código:
 // Classe Order:
 // Representa uma encomenda com ID, status e localização.
 // Inclui métodos getter e setter para acessar e modificar esses atributos.
